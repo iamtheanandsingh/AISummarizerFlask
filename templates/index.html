@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Text Summarizer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>AI Text Summarizer</h1>
+    <form id="summaryForm" action="/summarize" method="post" enctype="multipart/form-data">
+        <textarea name="text" placeholder="Paste your text here..." rows="10" cols="50"></textarea><br><br>
+        <input type="file" name="file">
+        <button type="submit">Summarize</button>
+    </form>
+    <h2>Summary:</h2>
+    <div id="summaryResult"></div>
+
+    <script>
+        document.getElementById('summaryForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(document.getElementById('summaryForm'));
+            const response = await fetch('/summarize', { method: 'POST', body: formData });
+            const data = await response.json();
+            document.getElementById('summaryResult').innerText = data.summary || data.error;
+        };
+    </script>
+</body>
+</html>
